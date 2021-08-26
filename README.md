@@ -7,8 +7,8 @@
 - Talk about SPAs
 - Review the React component lifecycle and use component methods to integrate
   with API calls
-- Use React Router's `BrowserRouter`, `Link`, `Route` and `Redirect`
-  components to add navigation to a React application
+- Use React Router's `BrowserRouter`, `Link`, `Route` and `Redirect` components
+  to add navigation to a React application
 
 ## Framing
 
@@ -19,15 +19,15 @@ scope, we need an easier and more robust way of rendering different components.
 Additionally, we will want the ability to set information in the url parameters
 to make it easier for users to identify where they are in the application.
 
-React Router allows us to build single-page web applications with navigation 
+React Router allows us to build single-page web applications with navigation
 without having to rely on page refreshes to take the user to other pages(thereby
-avoiding the flash of a white screen). The result is a more seamless user experience
-as the user navigates through the app.
+avoiding the flash of a white screen). The result is a more seamless user
+experience as the user navigates through the app.
 
-React Router is one of the most commonly-used routing libraries for
-client-side routing with React. It is relatively straightforward to configure 
-and integrates with the component architecture nicely (since it's just a collection
-of components).
+React Router is one of the most commonly-used routing libraries for client-side
+routing with React. It is relatively straightforward to configure and integrates
+with the component architecture nicely (since it's just a collection of
+components).
 
 We will configure it as the root component in a React application. Then we'll
 tell it to render other components within itself depending on the path in the
@@ -36,15 +36,14 @@ url. This way we don't have to reload the entire page to swap out some data.
 Don't confuse it with the express router! They do different things, though they
 both operate based on paths.
 
-
-## We Do: [React Bitcoin Prices](https://git.generalassemb.ly/sei-921/react-bitcoin-prices) Setup
+## We Do: [React Bitcoin Prices](../../../react-bitcoin-prices) Setup
 
 Let's get set up with the react bitcoin price checker!
 
 ## You Do: Coindesk API
 
-We will query the Coindesk API in this exercise. Take 5 minutes to read and test out (using the
-browser) the API docs below
+We will query the Coindesk API in this exercise. Take 5 minutes to read and test
+out (using the browser) the API docs below
 
 [Coindesk API](https://www.coindesk.com/api/)
 
@@ -85,9 +84,9 @@ handy!
 
 ### Importing Dependencies
 
-First, we need to install `react-router-dom` as a dependency
-in `package.json`. Running `npm install` or `npm i` with arguments should automatically do
-this for us.
+First, we need to install `react-router-dom` as a dependency in `package.json`.
+Running `npm install` or `npm i` with arguments should automatically do this for
+us.
 
 ```sh
 npm install react-router-dom
@@ -132,7 +131,8 @@ The three main ones we're going to use today are:
 <Redirect />
 ```
 
-Let's go ahead and import just route and link for now, we'll cover redirect later.
+Let's go ahead and import just route and link for now, we'll cover redirect
+later.
 
 ```js
 // src/components/App/App.js
@@ -177,21 +177,19 @@ components.
 
 ```jsx
 // src/components/App/App.js
-  return(
-    <div>
-      <nav>
-        <Link to="/">
-          <img src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" alt=""/>
-          <h1>Bitcoin prices</h1>
-        </Link>
-      </nav>
-      <main>
-        <Route path="/"
-          component={Home}
-        />
-      </main>
-    </div>
-  )
+return (
+  <div>
+    <nav>
+      <Link to="/">
+        <img src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" alt="" />
+        <h1>Bitcoin prices</h1>
+      </Link>
+    </nav>
+    <main>
+      <Route path="/" component={Home} />
+    </main>
+  </div>
+);
 ```
 
 Great! But this doesn't do anything because we're already on the homepage.
@@ -213,28 +211,24 @@ not passing any props in, we're not modifying anything.
 ```jsx
 // src/Components/App/App.js
 //...
-import Currencies from '../Currencies/Currencies'
+import Currencies from "../Currencies/Currencies";
 
 // ...
-  return(
-    <div>
-      <nav>
-        <Link to="/">
-          <img src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" alt=""/>
-          <h1>Bitcoin prices</h1>
-        </Link>
-        <Link to="/currencies">Currency List</Link>
-      </nav>
-      <main>
-        <Route path="/"
-          component={Home}
-        />
-        <Route path="/currencies"
-          component={Currencies}
-        />
-      </main>
-    </div>
-  )
+return (
+  <div>
+    <nav>
+      <Link to="/">
+        <img src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" alt="" />
+        <h1>Bitcoin prices</h1>
+      </Link>
+      <Link to="/currencies">Currency List</Link>
+    </nav>
+    <main>
+      <Route path="/" component={Home} />
+      <Route path="/currencies" component={Currencies} />
+    </main>
+  </div>
+);
 ```
 
 </details>
@@ -258,17 +252,20 @@ value equal to the `href` value.
 
 ```jsx
 // src/Components/Currencies/Currencies.js
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 //...
-    let list = listOfCurrencies.map(item => {
-      return (
-        <div className="currency" key={item.currency}>
-          <p><Link to={"/price/"+ item.currency}>{item.currency}</Link>: {item.country}</p>
-        </div>
-      )
-    })
-  // ...
+let list = listOfCurrencies.map((item) => {
+  return (
+    <div className="currency" key={item.currency}>
+      <p>
+        <Link to={"/price/" + item.currency}>{item.currency}</Link>:{" "}
+        {item.country}
+      </p>
+    </div>
+  );
+});
+// ...
 ```
 
 Great! Now go back to the page and click the link again, what happens?
@@ -315,20 +312,7 @@ We've got a function in this (`App.js`) component called setPrice. let's pass
 that in.
 
 ```jsx
-<Route
-  path="/price/:currency"
-  render={() => <Price setPrice={setPrice} />}
-/>
-```
-
-We also have to pass our URL parameter into `<Price />`. This is where the arrow
-function comes in to play.
-
-```jsx
-<Route
-  path="/price/:currency"
-  render={routerProps => <Price setPrice={setPrice} match={routerProps.match} />}
-/>
+<Route path="/price/:currency" render={() => <Price setPrice={setPrice} />} />
 ```
 
 Finally, we need to pass in the current component's price state.
@@ -336,10 +320,51 @@ Finally, we need to pass in the current component's price state.
 ```jsx
 <Route
   path="/price/:currency"
-  render={routerProps => (
-    <Price setPrice={setPrice} match={routerProps.match} price = {price} />
-  )}
+  render={() => <Price setPrice={setPrice} price={price} />}
 />
+```
+
+Now let's check out the `components/Price/Price.js` file and make a couple
+additions. In this component, we'll need access to whatever `currency` variable
+was passed to the URL parameter when the user clicked on the `Link`.
+
+In order to access it, we'll use the `useParams` hook from React Router and
+destructure whatever we called our parameter from the router props.
+
+```jsx
+import React, { useEffect } from "react";
+// Add useParams hook
+import { useParams } from "react-router-dom";
+import "./Price.css";
+
+const coindeskURL = "https://api.coindesk.com/v1/bpi/currentprice/";
+
+const Price = ({ price, setPrice }) => {
+  // Destructure the currency property from React Router's Route parameters using the useParams Hook
+  const { currency } = useParams();
+  useEffect(() => {
+    const url = `${coindeskURL}${currency}.json`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        let newPrice = res.bpi[currency].rate;
+        setPrice(newPrice);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  return (
+    <div>
+      <h1>Bitcoin price in {currency}</h1>
+      <div className="price">{price}</div>
+    </div>
+  );
+};
+
+export default Price;
 ```
 
 We still have some weird display quirks, and for that, we'll use `<Switch>` to
@@ -373,7 +398,7 @@ Let's look at our routes in `App.js` again:
 />
 <Route
   path="/price/:currency"
-  render={(routerProps) => <Price setPrice={setPrice} match={routerProps.match} price={price} /> }
+  render={() => <Price setPrice={setPrice}  price={price} /> }
 />
 ```
 
@@ -385,7 +410,8 @@ Try putting `exact` on the `/` path route component.
 
 > Note: this is equivalent to putting `exact=true`
 
-Beautiful! this is a great solution, and can also be used if we have many different routes.
+Beautiful! this is a great solution, and can also be used if we have many
+different routes.
 
 If we had a list of routes like:
 
@@ -419,13 +445,13 @@ Redirect only requires a `to` prop which tells it what path to redirect to.
 ## Wrapping Up (Remainder of Class)
 
 Here's a rough outline of how you should go about building react apps! Follow
-these suggestions, or don't, but they will probably help you a lot if you do them
-in order. I suggest reading through all of the steps before you start so you can 
-become familiar with the big picture of the entire process.
+these suggestions, or don't, but they will probably help you a lot if you do
+them in order. I suggest reading through all of the steps before you start so
+you can become familiar with the big picture of the entire process.
 
-1. Start a new app using `create-react-app`. Call it user-router or something similar, 
-it doesn't matter. You will be building four components (not including App.js). 
-Each one will render something different:
+1. Start a new app using `create-react-app`. Call it user-router or something
+   similar, it doesn't matter. You will be building four components (not
+   including App.js). Each one will render something different:
 
 | Component | Renders                                   | Route         |
 | --------- | ----------------------------------------- | ------------- |
@@ -434,22 +460,23 @@ Each one will render something different:
 | Users     | A list of users                           | /users/       |
 | NewUser   | A form that lets you add a username       | /users/new    |
 
-1. Set up `react-router` like we did in this lesson, at the top level. What 
-is the top level of a React app?
+1. Set up `react-router` like we did in this lesson, at the top level. What is
+   the top level of a React app?
 
-1. Build out each component with placeholders to render something. Do this first, before 
-starting to add state, props, or functionality.
+1. Build out each component with placeholders to render something. Do this
+   first, before starting to add state, props, or functionality.
 
-1. Set up your routes so that each route only displays the appropriate component.
+1. Set up your routes so that each route only displays the appropriate
+   component.
 
 1. Plan out where you think your state should live. If you have to share state
-between multiple components, what's the best place to keep it? Think about what your 
-state needs to contain.
+   between multiple components, what's the best place to keep it? Think about
+   what your state needs to contain.
 
 1. Initialize your state and pass it down to the appropriate components.
 
 1. Wire up those components to be able to display and update the state as
-necessary. Add the functionality to have the greet component receive and display a
-parameter.
+   necessary. Add the functionality to have the greet component receive and
+   display a parameter.
 
 1. Marvel at your creation and your progress after only 5 weeks of programming!
