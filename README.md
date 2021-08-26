@@ -333,7 +333,7 @@ destructure whatever we called our parameter from the router props.
 
 ```jsx
 import React, { useEffect } from "react";
-// Add useParams hook
+// Import useParams hook by destructuring from 'react-router-dom'
 import { useParams } from "react-router-dom";
 import "./Price.css";
 
