@@ -33,9 +33,6 @@ We will configure it as the root component in a React application. Then we'll
 tell it to render other components within itself depending on the path in the
 url. This way we don't have to reload the entire page to swap out some data.
 
-Don't confuse it with the express router! They do different things, though they
-both operate based on paths.
-
 ## We Do: [React Bitcoin Prices](../../../react-bitcoin-prices) Setup
 
 Let's get set up with the react bitcoin price checker!
@@ -372,6 +369,8 @@ When a user visits the route `/currencies/new` all three of these routes would m
 ).
 
 The order routes are defined doesn't matter.
+
+![shia](https://media.giphy.com/media/ujUdrdpX7Ok5W/giphy.gif)
 
 
 ## Redirects
