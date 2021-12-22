@@ -7,7 +7,7 @@
 - Talk about SPAs
 - Review the React component lifecycle and use component methods to integrate
   with API calls
-- Use React Router's `BrowserRouter`, `Link`, `Route` and `Redirect` components
+- Use React Router's `BrowserRouter`, `Link`, `Route`, `Routes`, and `Navigate` components
   to add navigation to a React application
 
 ## Framing
