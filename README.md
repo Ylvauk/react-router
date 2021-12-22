@@ -35,7 +35,7 @@ url. This way we don't have to reload the entire page to swap out some data.
 
 ## We Do: [React Bitcoin Prices](../../../react-bitcoin-prices) Setup
 
-Let's get set up with the react bitcoin price checker!
+Let's get set up with the react bitcoin price checker! Here is a [live site](https://vigorous-bell-39e27b.netlify.app/) that demonstrates what we're going to build today! 
 
 ## You Do: Coindesk API
 
@@ -43,6 +43,8 @@ We will query the Coindesk API in this exercise. Take 5 minutes to test
 out (using the browser) the API example endpoint below:
 
 [Coindesk API](https://api.coindesk.com/v1/bpi/currentprice/usd.json)
+
+Try interpolating different currency abbreviates into the URL for `usd`, such as `jpy` for Japanese Yen or `euro` for Euro. 
 
 Also, install the
 [React developer tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
