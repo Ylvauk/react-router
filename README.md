@@ -39,10 +39,10 @@ Let's get set up with the react bitcoin price checker!
 
 ## You Do: Coindesk API
 
-We will query the Coindesk API in this exercise. Take 5 minutes to read and test
-out (using the browser) the API docs below
+We will query the Coindesk API in this exercise. Take 5 minutes to test
+out (using the browser) the API example endpoint below:
 
-[Coindesk API](https://www.coindesk.com/api/)
+[Coindesk API](https://api.coindesk.com/v1/bpi/currentprice/usd.json)
 
 Also, install the
 [React developer tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
