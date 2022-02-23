@@ -7,7 +7,7 @@
 - Talk about SPAs
 - Review the React component lifecycle and use component methods to integrate
   with API calls
-- Use React Router's `BrowserRouter`, `Link`, `Route` and `Redirect` components
+- Use React Router's `BrowserRouter`, `Link`, `Route`, `Routes`, and `Navigate` components
   to add navigation to a React application
 
 ## Framing
@@ -33,19 +33,18 @@ We will configure it as the root component in a React application. Then we'll
 tell it to render other components within itself depending on the path in the
 url. This way we don't have to reload the entire page to swap out some data.
 
-Don't confuse it with the express router! They do different things, though they
-both operate based on paths.
-
 ## We Do: [React Bitcoin Prices](../../../react-bitcoin-prices) Setup
 
-Let's get set up with the react bitcoin price checker!
+Let's get set up with the react bitcoin price checker! Here is a [live site](https://vigorous-bell-39e27b.netlify.app/) that demonstrates what we're going to build today! 
 
 ## You Do: Coindesk API
 
-We will query the Coindesk API in this exercise. Take 5 minutes to read and test
-out (using the browser) the API docs below
+We will query the Coindesk API in this exercise. Take 5 minutes to test
+out (using the browser) the API example endpoint below:
 
-[Coindesk API](https://www.coindesk.com/api/)
+[Coindesk API](https://api.coindesk.com/v1/bpi/currentprice/usd.json)
+
+Try interpolating different currency abbreviates into the URL for `usd`, such as `jpy` for Japanese Yen or `euro` for Euro. 
 
 Also, install the
 [React developer tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
@@ -79,7 +78,7 @@ component. Let's bring in React Router and set it up to allow us to display
 multiple components.
 
 When working with a new library, it's useful to have
-[the documentation](https://reacttraining.com/react-router/web/guides/quick-start)
+[the documentation](https://reactrouter.com/docs/en/v6/getting-started/overview)
 handy!
 
 ### Importing Dependencies
@@ -123,21 +122,22 @@ necessary.
 Next, in `App.js`, we need to import all of the other components we want to use
 from React Router.
 
-The three main ones we're going to use today are:
+The four main ones we're going to use today are:
 
 ```jsx
+<Routes />
 <Route />
 <Link />
 <Redirect />
 ```
 
-Let's go ahead and import just route and link for now, we'll cover redirect
+Let's go ahead and import just routes, route and link for now, we'll cover redirect
 later.
 
 ```js
 // src/components/App/App.js
 
-import { Route, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 ```
 
 Now that we have access to these components, we need to modify the `App`
@@ -154,10 +154,11 @@ use is this:
         <Link to=""></Link>
       </nav>
       <main>
-        // routes render the specified component we pass in
-        <Route path="" render={}/>
-        // we can give either a render or a component prop.
-        <Route path="" component={}/>
+        <Routes>
+             // routes render the specified component we pass as the element prop.
+            <Route path="" element={}/>
+            <Route path="/example" element={}/>
+        </Routes>
       </main>
     </div>
   )
@@ -168,9 +169,11 @@ use is this:
 > `to` property, which sets the URL to whatever path is defined within it. Link
 > can also be used inside of any component that is connected to a `Route`.
 
-> **Route** - a component that renders a specified component (using either
-> `render` or `component`) based on the current url (`path`) we're at. `path`
+> **Route** - a component that renders a specified component (using the 
+> `element` prop) based on the current url (`path`) we're at. `path`
 > should probably match a `<Link to="">` defined somewhere.
+
+> **Routes** - a component that allows us to add `Route` components to our app. All `Route` components must be nested within a `Routes` component. Automatically picks the `Route` that best matches the current URL.
 
 Now let's modify the render method in `App.js` to include our Link and Route
 components.
@@ -186,17 +189,15 @@ return (
       </Link>
     </nav>
     <main>
-      <Route path="/" component={Home} />
+        <Routes>
+            <Route path="/" element={<Home/>} />
+        </Routes>
     </main>
   </div>
 );
 ```
 
 Great! But this doesn't do anything because we're already on the homepage.
-
-Also, note that we used `component` in this case to display our home component.
-We're doing that because we just want to display it without any changes - we're
-not passing any props in, we're not modifying anything.
 
 ## You do: Add a Second Route and Link (~10 min)
 
@@ -224,8 +225,10 @@ return (
       <Link to="/currencies">Currency List</Link>
     </nav>
     <main>
-      <Route path="/" component={Home} />
-      <Route path="/currencies" component={Currencies} />
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/currencies" element={<Currencies/>} />
+      </Routes>
     </main>
   </div>
 );
@@ -237,7 +240,7 @@ Now we've got two components and two routes. Perfect. Let's take a look at our
 currencies component and see what we need to do to make it work.
 
 This a good point to talk about React Router's
-[Route Props](https://reacttraining.com/react-router/web/api/Route/route-props).
+[URL Parameters](https://reactrouter.com/docs/en/v6/getting-started/overview#reading-url-parameters).
 
 ## We do: Currencies component
 
@@ -289,30 +292,17 @@ we want to include a parameter.
 Look at the URL that we're on after clicking on a currency. Then look at the
 `Price` component. How might you write the `path` prop to make it work?
 
-> Hint: This part is just like defining a route with a param in express.
-
 ## We do: Fix prices component (~25 min)
 
 We've added a route but not everything will work yet. HOW COME!?
 
-There are a couple things we need to fix.
-
-Firstly, we have to make sure we're using `render` instead of `component` in our
-route. That's because we're going to be passing some props into our component.
-
-```jsx
-//...
-<Route path="/price/:currency" render={() => <Price />} />
-//...
-```
-
-Now we need to add a couple things to `<Price />`
+We need to add a couple things to `<Price />`
 
 We've got a function in this (`App.js`) component called setPrice. let's pass
 that in.
 
 ```jsx
-<Route path="/price/:currency" render={() => <Price setPrice={setPrice} />} />
+<Route path="/price/:currency" element={<Price setPrice={setPrice} />} />
 ```
 
 Finally, we need to pass in the current component's price state.
@@ -320,7 +310,7 @@ Finally, we need to pass in the current component's price state.
 ```jsx
 <Route
   path="/price/:currency"
-  render={() => <Price setPrice={setPrice} price={price} />}
+  element={<Price setPrice={setPrice} price={price} />}
 />
 ```
 
@@ -367,80 +357,37 @@ const Price = ({ price, setPrice }) => {
 export default Price;
 ```
 
-We still have some weird display quirks, and for that, we'll use `<Switch>` to
-fix them.
+## Which route is chosen? (~10 min)
 
-## Using exact (~10 min)
+If we had a list of routes defined with the following path patterns within the same `Routes` component:
 
-exact works just like the switch/case statements in javascript. We're comparing
-string values (in this case, routes) and executing conditions (rendering
-components) based on what matches turn out true.
-
-Since we're not using exact right now, we'll see something like this:
-
-![preswitch](./images/pre-switch.png)
-
-There are two components stacked on top of each other! The Home and the
-Currencies component. That's silly.
-
-> Why does this happen?
-
-To handle this, specify `exact` on routes.
-
-Let's look at our routes in `App.js` again:
-
-```jsx
-<Route path="/"
-  component={Home}
-/>
-<Route path="/currencies"
-  component={Currencies}
-/>
-<Route
-  path="/price/:currency"
-  render={() => <Price setPrice={setPrice}  price={price} /> }
-/>
-```
-
-Try putting `exact` on the `/` path route component.
-
-```js
-<Route path="/" exact component={Home} />
-```
-
-> Note: this is equivalent to putting `exact=true`
-
-Beautiful! this is a great solution, and can also be used if we have many
-different routes.
-
-If we had a list of routes like:
-
-- `/currencies`
+- `/currencies/*`
 - `/currencies/new`
-- `/currencies/:id` etc
+- `/currencies/:id`
 
-we have to put `exact` on `/currencies` or else, any time we went to
-`/currencies/something` it would match both the root (`/currencies`) AND the
-`/currencies/something` routes and both would be rendered.
+> Note that adding * in a path means any characters can fall in the * position. For example `/currencies/test/something/hi` would match the path pattern `/currencies/*`.
 
-So easy!
+When a user visits the route `/currencies/new` all three of these routes would match. Unless you specify differently, only one route will be rendered. The routed rendered is the most specific route that matches. More information can be found here [here](https://reactrouter.com/docs/en/v6/getting-started/concepts#ranking-routes
+).
+
+The order routes are defined doesn't matter.
 
 ![shia](https://media.giphy.com/media/ujUdrdpX7Ok5W/giphy.gif)
 
+
 ## Redirects
 
-Redirects using react router are incredibly easy. Redirect is just another
-component we can import and use by passing it a few props.
+To redirect a user to a different path using react router, you use the `Navigate` component.
 
-- Import the `Redirect` component from `react-router-dom`
+- Import the `Navigate` component from `react-router-dom`
 - Add another route called `/currency`
-- Instead of rendering one of our components, put the `Redirect` component.
+- Instead of rendering one of our components, put the `Navigate` component as the value for the element prop.
 
 ```js
-<Route path="/currency" render={() => <Redirect to="/currencies" />} />
+<Route path="/currency" element={<Navigate to="/currencies" />} />
 ```
 
-Redirect only requires a `to` prop which tells it what path to redirect to.
+Navigate only requires a `to` prop which tells it what path to navigate to.
 
 ## Wrapping Up (Remainder of Class)
 
