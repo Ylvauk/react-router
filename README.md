@@ -62,7 +62,7 @@ following questions:
 
 1. What dependencies is the application currently using? Where can I find
    information on them?
-2. What is the purpose of `ReactDOM.render()`? What file is this method being
+2. What is the purpose of `root.render()`? What file is this method being
    called in?
 3. Where are the components of our application located? Why might we want to
    separate them into their own folders?
@@ -103,12 +103,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 //...
 
-ReactDOM.render(
+root.render(
   <Router>
     <App />
-  </Router>,
-  document.getElementById("root")
-);
+  </Router>
+  );
 ```
 
 > Note that we are aliasing `BrowserRouter` as `Router` here for brevity.
