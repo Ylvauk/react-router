@@ -127,7 +127,7 @@ The four main ones we're going to use today are:
 <Routes />
 <Route />
 <Link />
-<Redirect />
+<Navigate />
 ```
 
 Let's go ahead and import just routes, route and link for now, we'll cover redirect
